@@ -1,0 +1,52 @@
+﻿@page "/Members"
+
+@using DataAccess
+@using DataAccess.Repositorys
+@using DataAccess.Repositorys.Interface
+@using DataAccess.Models
+
+@inject IMembersRepository _membersRepository
+
+<h3>Members</h3>
+
+@if (members == null)
+{
+    <p>There is no members at the moment.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nick Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>DateOfBirth</th>
+                <th>City</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in members)
+            {
+                <tr>
+                    <td>@member.NickName</td>
+                    <td>@member.FirstName</td>
+                    <td>@member.LastName</td>
+                    <td>@member.DateOfBirth</td>
+                    <td>@member.City</td>
+                    <td>@member.Country</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<MembersModel> members;
+
+    protected override async Task OnInitializedAsync()
+    {
+        members = await _membersRepository.GetAllMembers();
+    }
+}
