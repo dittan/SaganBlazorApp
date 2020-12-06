@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SaganGaming.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +30,6 @@ namespace SaganGaming
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<IMembersRepository, MembersRepository>();
         }
