@@ -16,6 +16,15 @@ namespace DataAccess.Repositorys
             _sqlDataAccess = sqlDataAccess;
         }
 
+        public async Task<bool> AddMember(MembersModel member)
+        {
+            const string sql = "INSERT INTO Members (NickName, FirstName, LastName, DateOfBirth, City, Country, Image) VALUES (@NickName, @FirstName, @LastName, @DateOfBirth, @City, @Country, @Image)";
+
+            var result = await _sqlDataAccess.SaveAsync(sql, member);
+
+            return result;
+        }
+
         public async Task<List<MembersModel>> GetAllMembers()
         {
             const string sql = "SELECT [NickName],[FirstName],[LastName],[DateOfBirth],[City],[Country],[Image] FROM [Members]";

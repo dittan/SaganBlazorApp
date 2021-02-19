@@ -11,6 +11,6 @@ namespace DataAccess.Models
         public DateTime DateOfBirth { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        //public byte[] Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

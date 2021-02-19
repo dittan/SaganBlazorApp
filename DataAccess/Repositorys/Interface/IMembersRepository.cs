@@ -9,5 +9,6 @@ namespace DataAccess.Repositorys.Interface
     public interface IMembersRepository
     {
         Task<List<MembersModel>> GetAllMembers();
+        Task<bool> AddMember(MembersModel member);
     }
 }

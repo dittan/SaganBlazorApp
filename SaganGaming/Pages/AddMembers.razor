@@ -1,39 +1,76 @@
 ﻿@page "/AddMembers"
 
+@using DataAccess.Models
+@using DataAccess.Repositorys.Interface
+
+@inject IMembersRepository _membersRepository
+
 <h3>Add Members</h3>
 
-<form class="col-md-6">
+<EditForm Model="@membersModel" OnValidSubmit="@AddMember" class="col-md-6">
+    <DataAnnotationsValidator />    
+    <ValidationSummary />
     <div class="form-group">
         <label for="nickName">Nick name</label>
-        <input type="text" class="form-control" id="nickName">
+        <input type="text" @bind-value="membersModel.NickName" class="form-control" id="nickName">
     </div>
     <div class="form-group">
         <label for="firstName">First name</label>
-        <input type="text" class="form-control" id="firstName">
+        <input type="text" @bind-value="membersModel.FirstName" class="form-control" id="firstName">
     </div>
     <div class="form-group">
         <label for="lastName">Last name</label>
-        <input type="text" class="form-control" id="lastName">
+        <input type="text" @bind-value="membersModel.LastName" class="form-control" id="lastName">
     </div>
     <div class="form-group">
         <label for="dateOfBirth">Date of birth</label>
-        <input type="date" class="form-control" id="dateOfBirth">
+        <input type="date" @bind-value="membersModel.DateOfBirth" class="form-control" id="dateOfBirth">
     </div>
     <div class="form-group">
         <label for="city">City</label>
-        <input type="text" class="form-control" id="city">
+        <input type="text" @bind-value="membersModel.City" class="form-control" id="city">
     </div>
     <div class="form-group">
         <label for="country">Country</label>
-        <input type="text" class="form-control" id="country">
+        <input type="text" @bind-value="membersModel.Country" class="form-control" id="country">
     </div>
     <div class="form-group">
         <label for="image">Upload image</label>
-        <input type="file" class="form-control-file" id="image">
+        <InputFile OnChange="@OnInputFileChange" multiple />
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
-</form>
+</EditForm>
 
 @code {
+    private MembersModel membersModel = new MembersModel();
 
+    private async Task AddMember()
+    {
+        MembersModel member = new MembersModel
+        {
+            NickName = membersModel.NickName,
+            FirstName = membersModel.FirstName,
+            LastName = membersModel.LastName,
+            DateOfBirth = membersModel.DateOfBirth,
+            City = membersModel.City,
+            Country = membersModel.Country,
+            Image = membersModel.Image
+        };
+
+        var s = await _membersRepository.AddMember(member);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var maxAllowedFiles = 1;
+        var format = "image/jpg";
+
+        foreach (var imageFile in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            var resizedImageFile = await imageFile.RequestImageFileAsync(format,
+                100, 100);
+            var buffer = new byte[resizedImageFile.Size];
+            membersModel.Image = buffer;
+        }
+    }
 }
