@@ -9,7 +9,7 @@
 
 <h3>Members</h3>
 
-@if (members == null)
+@if (members == null || members.Count == 0)
 {
     <p>This saga has no members yet!</p>
 }
@@ -18,10 +18,9 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Nick Name</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>DateOfBirth</th>
+                <th>Nick</th>
+                <th>Name</th>
+                <th>Born</th>
                 <th>City</th>
                 <th>Country</th>
             </tr>
@@ -31,14 +30,13 @@ else
             {
                 <tr>
                     <td>@member.NickName</td>
-                    <td>@member.FirstName</td>
-                    <td>@member.LastName</td>
-                    <td>@member.DateOfBirth</td>
+                    <td>@member.FirstName @member.LastName</td>
+                    <td>@member.DateOfBirth.Year</td>
                     <td>@member.City</td>
                     <td>@member.Country</td>
                     @if (member.Image != null)
                     {
-                        <td><img src="data:image/gif;base64, @(Convert.ToBase64String(member.Image))" /></td>
+                        <td><img src="data:image/jpeg;base64, @(Convert.ToBase64String(member.Image))" /></td>
                     }
                 </tr>
             }

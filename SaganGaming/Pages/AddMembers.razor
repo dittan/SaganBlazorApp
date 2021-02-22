@@ -2,6 +2,7 @@
 
 @using DataAccess.Models
 @using DataAccess.Repositorys.Interface
+@using System.IO
 
 @inject IMembersRepository _membersRepository
 
@@ -63,13 +64,14 @@
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         var maxAllowedFiles = 1;
-        var format = "image/jpg";
+        var format = "image/jpeg";
 
         foreach (var imageFile in e.GetMultipleFiles(maxAllowedFiles))
         {
             var resizedImageFile = await imageFile.RequestImageFileAsync(format,
                 100, 100);
             var buffer = new byte[resizedImageFile.Size];
+            await resizedImageFile.OpenReadStream().ReadAsync(buffer);
             membersModel.Image = buffer;
         }
     }
