@@ -1,4 +1,4 @@
-﻿@page "/AddMembers"
+﻿@page "/add-members"
 
 @using DataAccess.Models
 @using DataAccess.Repositorys.Interface
@@ -69,7 +69,7 @@
         foreach (var imageFile in e.GetMultipleFiles(maxAllowedFiles))
         {
             var resizedImageFile = await imageFile.RequestImageFileAsync(format,
-                100, 100);
+                315, 315);
             var buffer = new byte[resizedImageFile.Size];
             await resizedImageFile.OpenReadStream().ReadAsync(buffer);
             membersModel.Image = buffer;

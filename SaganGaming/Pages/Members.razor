@@ -1,4 +1,4 @@
-﻿@page "/Members"
+﻿@page "/members"
 
 @using DataAccess
 @using DataAccess.Repositorys
@@ -7,7 +7,6 @@
 
 @inject IMembersRepository _membersRepository
 
-<h3>Members</h3>
 
 @if (members == null || members.Count == 0)
 {
@@ -15,33 +14,37 @@
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nick</th>
-                <th>Name</th>
-                <th>Born</th>
-                <th>City</th>
-                <th>Country</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var member in members)
-            {
-                <tr>
-                    <td>@member.NickName</td>
-                    <td>@member.FirstName @member.LastName</td>
-                    <td>@member.DateOfBirth.Year</td>
-                    <td>@member.City</td>
-                    <td>@member.Country</td>
-                    @if (member.Image != null)
-                    {
-                        <td><img src="data:image/jpeg;base64, @(Convert.ToBase64String(member.Image))" /></td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="typewriter">
+                    <h1>The Team</h1>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var member in members)
+         {
+            <div class="row">
+                <div class="col-md-6 col-12 mt-4 pt-2">
+                    <div class="team-list position-relative overflow-hidden shadow rounded">
+                        @if (member.Image != null)
+                         {
+                            <img src="data:image/jpeg;base64, @(Convert.ToBase64String(member.Image))" class="img-fluid float-left" alt="">
+                         }
+                        <div class="content float-right p-4">
+                            <h5 class="title mb-0">@member.FirstName @member.LastName</h5>
+                            <small class="text-muted">Nick: @member.NickName</small>
+                            <small class="text-muted">Born: @member.DateOfBirth.Year</small>
+                            <small class="text-muted">City: @member.City</small>
+                            <small class="text-muted">Country: @member.Country</small>
+                            <p class="text-muted mt-3">I must explain to you how all this mistaken idea of denouncing pleasure and system.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         }
+    </div>
 }
 
 @code {
