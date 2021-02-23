@@ -18,32 +18,24 @@ else
         <div class="row">
             <div class="col-12 text-center">
                 <div class="typewriter">
-                    <h1>The Team</h1>
+                    <h1 class="h1-the-team">The Team</h1>
                 </div>
             </div>
         </div>
 
-        @foreach (var member in members)
-         {
-            <div class="row">
-                <div class="col-md-6 col-12 mt-4 pt-2">
-                    <div class="team-list position-relative overflow-hidden shadow rounded">
-                        @if (member.Image != null)
-                         {
-                            <img src="data:image/jpeg;base64, @(Convert.ToBase64String(member.Image))" class="img-fluid float-left" alt="">
-                         }
-                        <div class="content float-right p-4">
-                            <h5 class="title mb-0">@member.FirstName @member.LastName</h5>
-                            <small class="text-muted">Nick: @member.NickName</small>
-                            <small class="text-muted">Born: @member.DateOfBirth.Year</small>
-                            <small class="text-muted">City: @member.City</small>
-                            <small class="text-muted">Country: @member.Country</small>
-                            <p class="text-muted mt-3">I must explain to you how all this mistaken idea of denouncing pleasure and system.</p>
-                        </div>
+        <div class="card-deck">
+            @foreach(var member in members)
+            {
+                <div class="card">
+                    <img src="data:image/jpeg;base64, @(Convert.ToBase64String(member.Image))" class="rounded float-left"/>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     </div>
                 </div>
-            </div>
-         }
+            }
+        </div>
     </div>
 }
 

@@ -30,7 +30,6 @@ namespace SaganGaming
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<IMembersRepository, MembersRepository>();
         }
 

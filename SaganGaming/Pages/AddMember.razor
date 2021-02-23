@@ -1,14 +1,15 @@
-﻿@page "/add-members"
+﻿@page "/members/add"
 
 @using DataAccess.Models
 @using DataAccess.Repositorys.Interface
 @using System.IO
 
 @inject IMembersRepository _membersRepository
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
 
 <h3>Add Members</h3>
 
-<EditForm Model="@membersModel" OnValidSubmit="@AddMember" class="col-md-6">
+<EditForm Model="@membersModel" OnValidSubmit="@AddMemberToDb" class="col-md-6">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group">
@@ -39,13 +40,14 @@
         <label for="image">Upload image</label>
         <InputFile OnChange="@OnInputFileChange" multiple />
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Add</button>
 </EditForm>
+<button class="btn btn-primary btn-cancel" @onclick="@Cancel">Cancel</button>
 
 @code {
     private MembersModel membersModel = new MembersModel();
 
-    private async Task AddMember()
+    private async Task AddMemberToDb()
     {
         MembersModel member = new MembersModel
         {
@@ -74,5 +76,10 @@
             await resizedImageFile.OpenReadStream().ReadAsync(buffer);
             membersModel.Image = buffer;
         }
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/members/admin");
     }
 }

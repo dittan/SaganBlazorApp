@@ -1,0 +1,93 @@
+﻿@page "/members/edit/{Id}"
+
+@using DataAccess.Models
+@using DataAccess.Repositorys.Interface
+
+@inject IMembersRepository _membersRepository
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+
+<h3>Edit Member</h3>
+
+<EditForm Model="@membersModel" OnValidSubmit="@UpdateMemberInDb" class="col-md-6">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="nickName">Nick name</label>
+        <input type="text" @bind-value="membersModel.NickName" class="form-control" id="nickName">
+    </div>
+    <div class="form-group">
+        <label for="firstName">First name</label>
+        <input type="text" @bind-value="membersModel.FirstName" class="form-control" id="firstName">
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last name</label>
+        <input type="text" @bind-value="membersModel.LastName" class="form-control" id="lastName">
+    </div>
+    <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <input type="date" @bind-value="membersModel.DateOfBirth" class="form-control" id="dateOfBirth">
+    </div>
+    <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" @bind-value="membersModel.City" class="form-control" id="city">
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" @bind-value="membersModel.Country" class="form-control" id="country">
+    </div>
+    @*<img src="data:image/jpeg;base64, @(Convert.ToBase64String(membersModel.Image))" width="50" height="50" />*@
+    <div class="form-group">
+        <label for="image">Upload image</label>
+        <InputFile OnChange="@OnInputFileChange" multiple />
+    </div>
+    <button class="btn btn-primary" type="submit">Edit</button>
+</EditForm>
+<button class="btn btn-primary btn-cancel" @onclick="@Cancel">Cancel</button>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    MembersModel membersModel = new MembersModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        membersModel = await _membersRepository.GetMemberById(Convert.ToInt32(Id));
+    }
+
+    private async Task UpdateMemberInDb()
+    {
+        MembersModel member = new MembersModel
+        {
+            NickName = membersModel.NickName,
+            FirstName = membersModel.FirstName,
+            LastName = membersModel.LastName,
+            DateOfBirth = membersModel.DateOfBirth,
+            City = membersModel.City,
+            Country = membersModel.Country,
+            Image = membersModel.Image
+        };
+
+        var s = await _membersRepository.UpdateMember(member);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var maxAllowedFiles = 1;
+        var format = "image/jpeg";
+
+        foreach (var imageFile in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            var resizedImageFile = await imageFile.RequestImageFileAsync(format,
+                315, 315);
+            var buffer = new byte[resizedImageFile.Size];
+            await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+            membersModel.Image = buffer;
+        }
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/members/admin");
+    }
+}
