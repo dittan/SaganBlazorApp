@@ -12,5 +12,6 @@ namespace DataAccess.Repositorys.Interface
         Task<List<MembersModel>> GetAllMembers();
         Task<bool> AddMember(MembersModel member);
         Task<bool> UpdateMember(MembersModel member);
+        Task<bool> DeleteMemberById(int id);
     }
 }

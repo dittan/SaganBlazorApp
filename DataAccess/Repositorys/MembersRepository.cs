@@ -37,6 +37,21 @@ namespace DataAccess.Repositorys
             }
         }
 
+        public async Task<bool> DeleteMemberById(int id)
+        {
+            string connectionString = _config.GetConnectionString(DbConnectionString);
+
+            const string sql = "DELETE FROM Members WHERE Id = @Id";
+
+            using(IDbConnection connection = new SqlConnection(connectionString))
+            {
+                var affectedRows = await connection.ExecuteAsync(sql, new { Id = id });
+
+                if (affectedRows > 0) return true;
+                else return false;
+            }
+        }
+
         public async Task<List<MembersModel>> GetAllMembers()
         {
             string connectionString = _config.GetConnectionString(DbConnectionString);

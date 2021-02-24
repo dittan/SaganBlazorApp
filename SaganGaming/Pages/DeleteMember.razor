@@ -1,0 +1,49 @@
+﻿@page "/members/delete/{Id}"
+
+@using DataAccess.Models
+@using DataAccess.Repositorys.Interface
+
+@inject IMembersRepository _membersRepository
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+
+<h3>Delete Member</h3>
+
+<ul class="list-group">
+    <li class="list-group-item">@membersModel.NickName</li>
+    <li class="list-group-item">@membersModel.FirstName @membersModel.LastName</li>
+    <li class="list-group-item">@membersModel.DateOfBirth</li>
+    <li class="list-group-item">@membersModel.City</li>
+    <li class="list-group-item">@membersModel.Country</li>
+    <li class="list-group-item">
+        @if (membersModel.Image != null)
+        {
+            <img src="data:image/jpeg;base64, @(Convert.ToBase64String(membersModel.Image))" width="50" height="50" />
+        }
+    </li>
+</ul>
+<button class="btn btn-danger" @onclick="@DeleteMemberInDb">Delete</button>
+<button class="btn btn-primary" @onclick="@Cancel">Cancel</button>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    MembersModel membersModel = new MembersModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        membersModel = await _membersRepository.GetMemberById(Convert.ToInt32(Id));
+    }
+
+    private async Task DeleteMemberInDb()
+    {
+        var result = await _membersRepository.DeleteMemberById(Convert.ToInt32(Id));
+
+        navigation.NavigateTo("/members/admin");
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/members/admin");
+    }
+}

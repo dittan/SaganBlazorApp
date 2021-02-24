@@ -73,6 +73,8 @@
         };
 
         var s = await _membersRepository.UpdateMember(member);
+
+        navigation.NavigateTo("/members/admin");
     }
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)

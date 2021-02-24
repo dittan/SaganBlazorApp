@@ -2,7 +2,6 @@
 
 @using DataAccess.Models
 @using DataAccess.Repositorys.Interface
-@using System.IO
 
 @inject IMembersRepository _membersRepository
 @inject Microsoft.AspNetCore.Components.NavigationManager navigation
@@ -61,6 +60,8 @@
         };
 
         var s = await _membersRepository.AddMember(member);
+
+        navigation.NavigateTo("/members/admin");
     }
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)

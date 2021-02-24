@@ -230,3 +230,12 @@ app {
 .btn-cancel {
     margin-top: 7px;
 }
+
+.list-group {
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.one-edge-shadow {
+    box-shadow: 5px 10px 10px -5px white;
+}
